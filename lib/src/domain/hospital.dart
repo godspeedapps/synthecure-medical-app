@@ -62,6 +62,7 @@ class Hospital extends Equatable {
       {bool includeProducts = true,
       bool includeDoctors = true}) {
     return {
+      'id': id,
       'name': name,
       'email': email,
       if (includeProducts)

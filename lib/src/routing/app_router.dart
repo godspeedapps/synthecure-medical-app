@@ -450,7 +450,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 pageBuilder: (context, state) =>
                     NoTransitionPage(
                       key: state.pageKey,
-                      child: const DashboardGrid(),
+                      child: const Dashboard(),
                     )),
             GoRoute(
               path: '/account',

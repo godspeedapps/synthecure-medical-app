@@ -46,45 +46,45 @@ class Onboarding extends ConsumerWidget {
             ),
           ],
         ),
-        CupertinoOnboardingPage(
-              title: Text('Create Case Sheets'),
-              body: Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
-                  child: Image.asset(
-                    "assets/brochure_1.png",
-                    fit: BoxFit.cover, // Ensures the image scales correctly
-                  ),
-                ),
-              ),
-            ),
-        CupertinoOnboardingPage(
-              title: Text('Send purchase orders to your hospitals'),
-              body: Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
-                  child: Image.asset(
-                    "assets/brochure_2.png",
-                    fit: BoxFit.cover, // Ensures the image scales correctly
-                  ),
-                ),
-              ),
-            ),
-        CupertinoOnboardingPage(
-              title: Text('Track and Analyze your Impact'),
-              body: Padding(
-                padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
-                  child: Image.asset(
-                    "assets/brochure_3.png",
-                    fit: BoxFit.cover, // Ensures the image scales correctly
-                  ),
-                ),
-              ),
-            ),
+        // CupertinoOnboardingPage(
+        //       title: Text('Create Case Sheets'),
+        //       body: Padding(
+        //         padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
+        //         child: ClipRRect(
+        //           borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
+        //           child: Image.asset(
+        //             "assets/brochure_1.png",
+        //             fit: BoxFit.cover, // Ensures the image scales correctly
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        // CupertinoOnboardingPage(
+        //       title: Text('Send purchase orders to your hospitals'),
+        //       body: Padding(
+        //         padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
+        //         child: ClipRRect(
+        //           borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
+        //           child: Image.asset(
+        //             "assets/brochure_2.png",
+        //             fit: BoxFit.cover, // Ensures the image scales correctly
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        // CupertinoOnboardingPage(
+        //       title: Text('Track and Analyze your Impact'),
+        //       body: Padding(
+        //         padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 48.0),
+        //         child: ClipRRect(
+        //           borderRadius: BorderRadius.circular(12.0), // Adjust the corner radius as needed
+        //           child: Image.asset(
+        //             "assets/brochure_3.png",
+        //             fit: BoxFit.cover, // Ensures the image scales correctly
+        //           ),
+        //         ),
+        //       ),
+        //     ),
       ],
     );
   }

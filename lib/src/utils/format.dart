@@ -26,7 +26,19 @@ class Format {
       return formatter.format(pay);
     }
     return '';
+  }  
+  
+  
+  static String formatSalesCurrency(double value) {
+  final formatter = NumberFormat('#,##0.##', 'en_US');
+  return formatter.format(value);
   }
+
+static double calculatePercentChange(double current, double previous) {
+  if (previous == 0) return 100.0;
+  final change = ((current - previous) / previous) * 100;
+  return change;
+}
 
   static String getHospitalDisplayText(
       List<HospitalInfo> hospitals) {

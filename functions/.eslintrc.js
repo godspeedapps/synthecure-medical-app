@@ -11,8 +11,9 @@ module.exports = {
     "google",
   ],
   rules: {
-    "quotes": 'off', // Disables double vs single quote errors
-    'no-unused-vars': 'off', // Disables unused variables warnings
+    "quotes": "off", // Disables double vs single quote errors
+    "no-unused-vars": "off", // Disables unused variables warnings
+    "max-len": ["error", {"code": 120, "ignoreComments": true}], // Allow 120 chars per line
   },
   overrides: [
     {

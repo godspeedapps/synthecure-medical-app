@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 // Defining the Synthecure color palette using Material 3 standards
 const Color synthecurePrimaryColor = Color(0xFF0693E3);
 const Color synthecureSecondaryColor = Color(0xFF8ED1FC);
-const Color synthecureSurfaceColor = Color(0xFFF0F0F0);
+const Color synthecureSurfaceColor = const Color(0xFFF8F8F8);
 const Color synthecureAccentColor = Color(0xFFABB8C3);
 const Color synthecureErrorColor = Color(0xFFE63946);
+const Color synthecureTertiary = Colors.amber;
 const Color synthecureSurfaceVariantColor =
     Color(0xFFF1F5F9); // Light gray for surfaces
 

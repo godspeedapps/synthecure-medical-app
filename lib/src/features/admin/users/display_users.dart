@@ -1,3 +1,4 @@
+import 'package:cupertino_modal_sheet/cupertino_modal_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,13 +7,13 @@ import 'package:super_cupertino_navigation_bar/super_cupertino_navigation_bar.da
 import 'package:synthecure/src/constants/app_sizes.dart';
 import 'package:synthecure/src/controllers/hospital_controller.dart';
 import 'package:synthecure/src/domain/doctor.dart';
-import 'package:synthecure/src/features/admin/hospitals/add_hospital.dart';
 import 'package:synthecure/src/features/admin/users/accounts_view.dart';
+import 'package:synthecure/src/features/onboarding/presentation/introduction.dart';
+import 'package:synthecure/src/repositories/onboarding_repository.dart';
 import 'package:synthecure/src/repositories/user_repository.dart';
 import 'package:synthecure/src/services/user_service.dart';
 import 'package:synthecure/src/controllers/account_controller.dart';
 import 'package:synthecure/src/domain/app_user.dart';
-import 'package:synthecure/src/services/entries_service.dart';
 import 'package:synthecure/src/routing/app_router.dart';
 import 'package:synthecure/src/utils/async_value_ui.dart';
 import 'package:synthecure/src/utils/format.dart';
@@ -65,13 +66,18 @@ class _AddUserPageState extends ConsumerState<AddUserPage> {
 
     final isFormValid = firstName.isNotEmpty &&
         lastName.isNotEmpty &&
-        email.isNotEmpty;
+        email.isNotEmpty &&
+        RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+            .hasMatch(email);
 
     ref.listen<AsyncValue>(
       userAccountControllerProvider,
       (_, state) =>
           state.showAlertDialogAddUser(context, email),
     );
+
+
+ 
 
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -402,6 +408,26 @@ class SalesRepsPageState
 
   @override
   Widget build(BuildContext context) {
+
+
+
+        final onboardingRepository =
+        ref.watch(onboardingRepositoryProvider);
+
+    final didCompleteOnboarding =
+        onboardingRepository.isOnboardingComplete();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!didCompleteOnboarding) {
+        showCupertinoModalSheet(
+          context: context,
+          builder: (context) {
+            return Onboarding();
+          },
+        );
+      }
+    });
+
 
 
     return Material(

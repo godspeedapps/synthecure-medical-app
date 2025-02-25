@@ -71,6 +71,8 @@ class OrdersRepository {
     // Generate a unique document ID
     final orderId = userOrdersRef.doc().id;
 
+    
+
     // Common order data
     final orderData = {
       'orderId': orderId, // ✅ Add the same orderId
@@ -84,7 +86,9 @@ class OrdersRepository {
       'notes': order['notes'],
       'isClosed': false,
       'createdBy': uid,
-      'isRestock' : order['isRestock']
+      'isRestock' : order['isRestock'],
+      'total': products.fold(0.0, (summer, product) => summer + (product.price * product.quantity)),
+      'productCount' : products.fold(0.0, (summer, product) => summer + product.quantity),
     };
 
     // Add all write operations to the batch

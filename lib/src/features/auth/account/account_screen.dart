@@ -34,13 +34,17 @@ class AccountScreen extends ConsumerWidget {
         screenHeight * 0.22; // 30% of screen height
 
     return Scaffold(
-      appBar: CupertinoNavigationBar(
-        backgroundColor: Colors.white,
-        border: Border.all(color: Colors.transparent),
-      ),
+      // appBar: CupertinoNavigationBar(
+      //   backgroundColor: Colors.white,
+      //   border: Border.all(color: Colors.transparent),
+      // ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Container(
+            color: Colors.white,
+            height: AppBar().preferredSize.height, 
+          ),
           Container(
             width: double
                 .infinity, // Ensure the container expands across the full width
