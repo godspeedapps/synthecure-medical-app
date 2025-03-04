@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:synthecure/src/domain/doctor.dart';
 import 'package:synthecure/src/domain/hospital.dart';
-import 'package:synthecure/src/features/admin/database_view.dart';
+import 'package:synthecure/src/features/admin/dashboard/database_view.dart';
 import 'package:synthecure/src/features/admin/doctors/all_doctors.dart';
 import 'package:synthecure/src/features/admin/doctors/doctor_case_sheets.dart';
 import 'package:synthecure/src/features/admin/doctors/doctor_page.dart';
@@ -104,7 +104,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         if (state.matchedLocation
             .startsWith('/loginPage')) {
           if (isAdmin == true) {
-            return '/displayUsers';
+            return '/dashboard';
           } else {
             return '/entries';
           }
@@ -253,19 +253,22 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
               ],
             ),
-            GoRoute(
-                path: '/dashboard',
-                name: AppRoute.dashboard.name,
-                routes: [
-                  GoRoute(
-                    path: 'allOrders',
+              GoRoute(
+                    path: '/allOrders',
                     name: AppRoute.allOrders.name,
                     pageBuilder: (context, state) {
-                      return MaterialPage(
+                      return NoTransitionPage(
                           key: state.pageKey,
                           child: AllOrdersScreen());
                     },
                   ),
+            GoRoute(
+                path: '/dashboard',
+
+                name: AppRoute.dashboard.name,
+                routes: [
+                  
+                
                   GoRoute(
                       path: 'allHospitals',
                       name: AppRoute.allHospitals.name,
@@ -462,6 +465,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 child: const AccountScreen(),
               ),
             ),
+            
             GoRoute(
               path: '/displayUsers',
               name: AppRoute.displayUsers.name,
@@ -541,8 +545,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       // ShellRoute for Non-Admin Users
       if (!(isAdmin ?? false))
         ShellRoute(
-          navigatorKey: GlobalKey<
-              NavigatorState>(), // Use a unique navigator key
+          navigatorKey: _shellNavigatorKey, // Use a unique navigator key
           builder: (context, state, child) {
             return ScaffoldWithBottomNavBar(child: child);
           },

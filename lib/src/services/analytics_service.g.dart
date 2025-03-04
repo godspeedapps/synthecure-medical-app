@@ -24,7 +24,7 @@ final analyticsServiceProvider = AutoDisposeProvider<AnalyticsService>.internal(
 // ignore: unused_element
 typedef AnalyticsServiceRef = AutoDisposeProviderRef<AnalyticsService>;
 String _$salesOverviewStreamHash() =>
-    r'b91e108e2e2b5dc0b03777c80512f2f218f1f662';
+    r'ba6c2167eccff9411d0a2b08df28b639da532910';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -52,16 +52,18 @@ class _SystemHash {
 const salesOverviewStreamProvider = SalesOverviewStreamFamily();
 
 /// See also [salesOverviewStream].
-class SalesOverviewStreamFamily extends Family<AsyncValue<SalesTotals>> {
+class SalesOverviewStreamFamily extends Family<AsyncValue<DashboardAnalytics>> {
   /// See also [salesOverviewStream].
   const SalesOverviewStreamFamily();
 
   /// See also [salesOverviewStream].
   SalesOverviewStreamProvider call({
     required String id,
+    required String mode,
   }) {
     return SalesOverviewStreamProvider(
       id: id,
+      mode: mode,
     );
   }
 
@@ -71,6 +73,7 @@ class SalesOverviewStreamFamily extends Family<AsyncValue<SalesTotals>> {
   ) {
     return call(
       id: provider.id,
+      mode: provider.mode,
     );
   }
 
@@ -90,15 +93,16 @@ class SalesOverviewStreamFamily extends Family<AsyncValue<SalesTotals>> {
 }
 
 /// See also [salesOverviewStream].
-class SalesOverviewStreamProvider
-    extends AutoDisposeStreamProvider<SalesTotals> {
+class SalesOverviewStreamProvider extends FutureProvider<DashboardAnalytics> {
   /// See also [salesOverviewStream].
   SalesOverviewStreamProvider({
     required String id,
+    required String mode,
   }) : this._internal(
           (ref) => salesOverviewStream(
             ref as SalesOverviewStreamRef,
             id: id,
+            mode: mode,
           ),
           from: salesOverviewStreamProvider,
           name: r'salesOverviewStreamProvider',
@@ -110,9 +114,155 @@ class SalesOverviewStreamProvider
           allTransitiveDependencies:
               SalesOverviewStreamFamily._allTransitiveDependencies,
           id: id,
+          mode: mode,
         );
 
   SalesOverviewStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+    required this.mode,
+  }) : super.internal();
+
+  final String id;
+  final String mode;
+
+  @override
+  Override overrideWith(
+    FutureOr<DashboardAnalytics> Function(SalesOverviewStreamRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SalesOverviewStreamProvider._internal(
+        (ref) => create(ref as SalesOverviewStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+        mode: mode,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<DashboardAnalytics> createElement() {
+    return _SalesOverviewStreamProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SalesOverviewStreamProvider &&
+        other.id == id &&
+        other.mode == mode;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+    hash = _SystemHash.combine(hash, mode.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SalesOverviewStreamRef on FutureProviderRef<DashboardAnalytics> {
+  /// The parameter `id` of this provider.
+  String get id;
+
+  /// The parameter `mode` of this provider.
+  String get mode;
+}
+
+class _SalesOverviewStreamProviderElement
+    extends FutureProviderElement<DashboardAnalytics>
+    with SalesOverviewStreamRef {
+  _SalesOverviewStreamProviderElement(super.provider);
+
+  @override
+  String get id => (origin as SalesOverviewStreamProvider).id;
+  @override
+  String get mode => (origin as SalesOverviewStreamProvider).mode;
+}
+
+String _$monthlyAnalyticsStreamHash() =>
+    r'a28d747a2931b4aa82bae37c388ab156fd84f16a';
+
+/// See also [monthlyAnalyticsStream].
+@ProviderFor(monthlyAnalyticsStream)
+const monthlyAnalyticsStreamProvider = MonthlyAnalyticsStreamFamily();
+
+/// See also [monthlyAnalyticsStream].
+class MonthlyAnalyticsStreamFamily
+    extends Family<AsyncValue<MonthlyAnalytics>> {
+  /// See also [monthlyAnalyticsStream].
+  const MonthlyAnalyticsStreamFamily();
+
+  /// See also [monthlyAnalyticsStream].
+  MonthlyAnalyticsStreamProvider call({
+    required String id,
+  }) {
+    return MonthlyAnalyticsStreamProvider(
+      id: id,
+    );
+  }
+
+  @override
+  MonthlyAnalyticsStreamProvider getProviderOverride(
+    covariant MonthlyAnalyticsStreamProvider provider,
+  ) {
+    return call(
+      id: provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'monthlyAnalyticsStreamProvider';
+}
+
+/// See also [monthlyAnalyticsStream].
+class MonthlyAnalyticsStreamProvider extends StreamProvider<MonthlyAnalytics> {
+  /// See also [monthlyAnalyticsStream].
+  MonthlyAnalyticsStreamProvider({
+    required String id,
+  }) : this._internal(
+          (ref) => monthlyAnalyticsStream(
+            ref as MonthlyAnalyticsStreamRef,
+            id: id,
+          ),
+          from: monthlyAnalyticsStreamProvider,
+          name: r'monthlyAnalyticsStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$monthlyAnalyticsStreamHash,
+          dependencies: MonthlyAnalyticsStreamFamily._dependencies,
+          allTransitiveDependencies:
+              MonthlyAnalyticsStreamFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  MonthlyAnalyticsStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -126,12 +276,13 @@ class SalesOverviewStreamProvider
 
   @override
   Override overrideWith(
-    Stream<SalesTotals> Function(SalesOverviewStreamRef provider) create,
+    Stream<MonthlyAnalytics> Function(MonthlyAnalyticsStreamRef provider)
+        create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SalesOverviewStreamProvider._internal(
-        (ref) => create(ref as SalesOverviewStreamRef),
+      override: MonthlyAnalyticsStreamProvider._internal(
+        (ref) => create(ref as MonthlyAnalyticsStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -143,13 +294,13 @@ class SalesOverviewStreamProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<SalesTotals> createElement() {
-    return _SalesOverviewStreamProviderElement(this);
+  StreamProviderElement<MonthlyAnalytics> createElement() {
+    return _MonthlyAnalyticsStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SalesOverviewStreamProvider && other.id == id;
+    return other is MonthlyAnalyticsStreamProvider && other.id == id;
   }
 
   @override
@@ -163,18 +314,18 @@ class SalesOverviewStreamProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SalesOverviewStreamRef on AutoDisposeStreamProviderRef<SalesTotals> {
+mixin MonthlyAnalyticsStreamRef on StreamProviderRef<MonthlyAnalytics> {
   /// The parameter `id` of this provider.
   String get id;
 }
 
-class _SalesOverviewStreamProviderElement
-    extends AutoDisposeStreamProviderElement<SalesTotals>
-    with SalesOverviewStreamRef {
-  _SalesOverviewStreamProviderElement(super.provider);
+class _MonthlyAnalyticsStreamProviderElement
+    extends StreamProviderElement<MonthlyAnalytics>
+    with MonthlyAnalyticsStreamRef {
+  _MonthlyAnalyticsStreamProviderElement(super.provider);
 
   @override
-  String get id => (origin as SalesOverviewStreamProvider).id;
+  String get id => (origin as MonthlyAnalyticsStreamProvider).id;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

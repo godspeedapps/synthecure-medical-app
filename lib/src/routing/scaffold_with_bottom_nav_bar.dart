@@ -29,11 +29,11 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
       // Note: this won't remember the previous state of the route
       // More info here:
       // https://github.com/flutter/flutter/issues/99124
-      context.goNamed(AppRoute.displayUsers.name);
+      context.goNamed(AppRoute.dashboard.name);
     }
     else if( index == 1) {
 
-           context.goNamed(AppRoute.dashboard.name);
+           context.goNamed(AppRoute.allOrders.name);
     } 
     
     else if (index == 2) {
@@ -61,15 +61,15 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
 
           // ),
           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.person_2_alt),
+              icon: const Icon(CupertinoIcons.house_alt),
              
-              label: 'Users'.hardcoded,
+              label: 'Home'.hardcoded,
              ),
 
-            BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.doc_chart),
+           BottomNavigationBarItem(
+              icon: const Icon(CupertinoIcons.doc_on_clipboard),
              
-              label: 'Database'.hardcoded,
+              label: 'Sheets'.hardcoded,
              ),
         
           BottomNavigationBarItem(

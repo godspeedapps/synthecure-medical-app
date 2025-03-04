@@ -81,7 +81,7 @@ Stream<List<Order>> entriesTileModelStream(EntriesTileModelStreamRef ref, {
 }
 
 
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<List<Order>> adminEntriesStream(AdminEntriesStreamRef ref) {
   final entriesService = ref.watch(entriesServiceProvider);
 

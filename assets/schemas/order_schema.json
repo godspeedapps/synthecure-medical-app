@@ -1,0 +1,111 @@
+{
+    "fields": [
+      {
+        "name": "id",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "date",
+        "type": "TIMESTAMP",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "doctor",
+        "type": "RECORD",
+        "mode": "REQUIRED",
+        "fields": [
+          {
+            "name": "id",
+            "type": "STRING",
+            "mode": "REQUIRED"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "specialty",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "hospital",
+        "type": "RECORD",
+        "mode": "REQUIRED",
+        "fields": [
+          {
+            "name": "id",
+            "type": "STRING",
+            "mode": "REQUIRED"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "location",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "parts",
+        "type": "RECORD",
+        "mode": "REPEATED",
+        "fields": [
+          {
+            "name": "id",
+            "type": "STRING",
+            "mode": "REQUIRED"
+          },
+          {
+            "name": "name",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "quantity",
+            "type": "INTEGER",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "price",
+            "type": "FLOAT",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "patient",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "isClosed",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "notes",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "createdBy",
+        "type": "STRING",
+        "mode": "NULLABLE"
+      },
+      {
+        "name": "isRestock",
+        "type": "BOOLEAN",
+        "mode": "NULLABLE"
+      }
+    ]
+  }
+  

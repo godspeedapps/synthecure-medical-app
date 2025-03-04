@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:synthecure/src/domain/app_user.dart';
@@ -34,6 +36,15 @@ class Format {
   return formatter.format(value);
   }
 
+  static String formatRoundedNumber(double value) {
+  if (value <= 0) return "0"; // Handle edge case
+
+  int magnitude = pow(10, value.floor().toString().length - 1).toInt(); // ✅ Find power of 10
+  int roundedValue = ((value / magnitude).round()) * magnitude; // ✅ Round to nearest leading digit
+
+  return "\$${roundedValue.toStringAsFixed(0)}"; // ✅ Ensure formatting
+}
+
 static double calculatePercentChange(double current, double previous) {
   if (previous == 0) return 100.0;
   final change = ((current - previous) / previous) * 100;
@@ -68,4 +79,21 @@ static double calculatePercentChange(double current, double previous) {
 
     return userText;
   }
+
+  static String getTimePeriodText(String mode) {
+      switch (mode) {
+        case "daily":
+          return "Today";
+        case "weekly":
+          return "This Week";
+        case "monthly":
+          return "This Month";
+        case "yearly":
+          return "This Year";
+        default:
+          return "All Time";
+      }
+    }
+    
+
 }

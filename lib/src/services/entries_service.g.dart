@@ -178,12 +178,11 @@ class _EntriesTileModelStreamProviderElement
 }
 
 String _$adminEntriesStreamHash() =>
-    r'bb123e8a025b28c93afeede527ec7473201a02cb';
+    r'92c42d064906197a8742dff8b88a36c37687155c';
 
 /// See also [adminEntriesStream].
 @ProviderFor(adminEntriesStream)
-final adminEntriesStreamProvider =
-    AutoDisposeStreamProvider<List<Order>>.internal(
+final adminEntriesStreamProvider = StreamProvider<List<Order>>.internal(
   adminEntriesStream,
   name: r'adminEntriesStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -195,7 +194,7 @@ final adminEntriesStreamProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AdminEntriesStreamRef = AutoDisposeStreamProviderRef<List<Order>>;
+typedef AdminEntriesStreamRef = StreamProviderRef<List<Order>>;
 String _$adminHospitalEntriesStreamHash() =>
     r'0ee0c13d5580571eddfef1a04625a9a09abade91';
 

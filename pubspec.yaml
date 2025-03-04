@@ -46,7 +46,8 @@ dependencies:
   cloud_functions: ^5.3.1
   fl_chart: ^0.63.0  # Check for latest version
   easy_pie_chart: ^1.0.1
-
+  flutter_native_splash: ^2.4.5
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -66,20 +67,30 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/app_icon.png"
+  image_path: "assets/splash-logo.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/app_icon.png"
+    image_path: "assets/splash-logo.png"
     background_color: "#ADD8E6"
     theme_color: "#ADD8E6"
   windows:
     generate: true
-    image_path: "assets/app_icon.png"
+    image_path: "assets/splash-logo.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/app_icon.png"
+    image_path: "assets/splash-logo.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/splash-logo.png
+  android: true
+  ios: true
+  fullscreen: true
+  android_gravity: center  # Ensures proper centering
+  
+
 
 # https://stackoverflow.com/a/74234079/436422
 #dependency_overrides:
@@ -100,6 +111,7 @@ flutter:
     - assets/synthecure-logo.jpg
     - assets/synthecure-main.png
     - assets/avatar_anim.json
+    - assets/splash-logo.png
 
 
   
