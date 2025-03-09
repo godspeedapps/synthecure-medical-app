@@ -86,8 +86,7 @@ class AnalyticsRepository {
           await callable.call({"period": period});
 
       if (result.data["success"] == true) {
-        print(
-            "📊 Raw API Response: ${result.data["data"]}");
+     
 
         // ✅ Ensure correct casting of BigQuery response
         List<DashboardAnalytics> analyticsList = (result

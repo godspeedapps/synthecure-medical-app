@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:synthecure/src/domain/part.dart';
+import 'package:synthecure/src/features/admin/dashboard/sales_overview.dart';
+import 'package:synthecure/src/services/analytics_service.dart';
 
 import '../../../repositories/firebase_auth_repository.dart';
 import '../../../repositories/orders_repository.dart';
 import '../../../domain/order.dart';
 
-class EditJobScreenController extends AutoDisposeAsyncNotifier<Order?> {
+class EditJobScreenController
+    extends AutoDisposeAsyncNotifier<Order?> {
   @override
   FutureOr<Order?> build() {
     return null; // No initial order
@@ -20,18 +23,19 @@ class EditJobScreenController extends AutoDisposeAsyncNotifier<Order?> {
     required List<Part> products,
     required bool isClosed,
   }) async {
-    final currentUser = ref.read(authRepositoryProvider).currentUser;
+    final currentUser =
+        ref.read(authRepositoryProvider).currentUser;
     if (currentUser == null) {
       throw AssertionError('User can\'t be null');
     }
 
     // Set loading state
-    state = const AsyncLoading<Order?>().copyWithPrevious(state);
+    state = const AsyncLoading<Order?>()
+        .copyWithPrevious(state);
 
     final repository = ref.read(ordersRepositoryProvider);
 
-    await Future.delayed(const Duration(seconds: 1));
-
+ 
     state = await AsyncValue.guard(() async {
       final createdOrder = await repository.addJob(
         uid: currentUser.uid,
@@ -39,24 +43,37 @@ class EditJobScreenController extends AutoDisposeAsyncNotifier<Order?> {
         products: products,
       );
 
-       print("Created Order: $createdOrder"); // Debugging output
-       
+
+
+    Future.delayed(
+        Duration(seconds: 2),
+        () => ref.refresh(salesOverviewStreamProvider(
+            id: ref
+                .read(firebaseAuthProvider)
+                .currentUser!
+                .uid,
+            mode: ref.read(selectedTimePeriodProvider))));
+
+
       return createdOrder;
     });
 
-    return state.value; // Returns the created Order or null if failed
+    return state
+        .value; // Returns the created Order or null if failed
   }
 
   Future<Order?> updateOrder({
     required Order order,
   }) async {
-    final currentUser = ref.read(authRepositoryProvider).currentUser;
+    final currentUser =
+        ref.read(authRepositoryProvider).currentUser;
     if (currentUser == null) {
       throw AssertionError('User can\'t be null');
     }
 
     // Set loading state
-    state = const AsyncLoading<Order?>().copyWithPrevious(state);
+    state = const AsyncLoading<Order?>()
+        .copyWithPrevious(state);
 
     final repository = ref.read(ordersRepositoryProvider);
 
@@ -68,11 +85,12 @@ class EditJobScreenController extends AutoDisposeAsyncNotifier<Order?> {
       return updatedOrder;
     });
 
-    return state.value; // Returns updated Order or null if failed
+    return state
+        .value; // Returns updated Order or null if failed
   }
-
 }
 
 final editJobScreenControllerProvider =
-    AutoDisposeAsyncNotifierProvider<EditJobScreenController, Order?>(
-        EditJobScreenController.new);
+    AutoDisposeAsyncNotifierProvider<
+        EditJobScreenController,
+        Order?>(EditJobScreenController.new);

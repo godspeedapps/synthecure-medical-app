@@ -534,7 +534,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     ]),
               ],
               pageBuilder: (context, state) =>
-                  NoTransitionPage(
+                  CupertinoPage(
                 key: state.pageKey,
                 child: const SalesRepsPage(),
               ),

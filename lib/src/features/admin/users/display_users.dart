@@ -411,23 +411,6 @@ class SalesRepsPageState
 
 
 
-        final onboardingRepository =
-        ref.watch(onboardingRepositoryProvider);
-
-    final didCompleteOnboarding =
-        onboardingRepository.isOnboardingComplete();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!didCompleteOnboarding) {
-        showCupertinoModalSheet(
-          context: context,
-          builder: (context) {
-            return Onboarding();
-          },
-        );
-      }
-    });
-
 
 
     return Material(

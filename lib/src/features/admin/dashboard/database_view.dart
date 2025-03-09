@@ -1,3 +1,4 @@
+import 'package:cupertino_modal_sheet/cupertino_modal_sheet.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ import 'package:synthecure/src/domain/sales_totals.dart';
 import 'package:synthecure/src/features/admin/dashboard/order_overview.dart';
 import 'package:synthecure/src/features/admin/dashboard/revenue_chart.dart';
 import 'package:synthecure/src/features/admin/dashboard/sales_overview.dart';
+import 'package:synthecure/src/features/onboarding/presentation/introduction.dart';
 import 'package:synthecure/src/repositories/firebase_auth_repository.dart';
+import 'package:synthecure/src/repositories/onboarding_repository.dart';
 import 'package:synthecure/src/repositories/test_analytics.dart';
 import 'package:synthecure/src/routing/app_router.dart';
 import 'package:synthecure/src/services/analytics_service.dart';
@@ -22,16 +25,17 @@ import 'package:easy_pie_chart/easy_pie_chart.dart'
 
 import 'package:synthecure/src/widgets/percent_change.dart';
 
-class Dashboard extends StatefulWidget {
+class Dashboard extends ConsumerStatefulWidget {
   const Dashboard({super.key});
 
   @override
-  State<Dashboard> createState() => _DashboardState();
+  ConsumerState<Dashboard> createState() =>
+      _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends ConsumerState<Dashboard> {
   /// Function to cycle through time periods
-  void cycleTimePeriod(WidgetRef ref) {
+  void cycleTimePeriod() {
     final periods = [
       "daily",
       "weekly",
@@ -46,19 +50,34 @@ class _DashboardState extends State<Dashboard> {
         periods[nextIndex];
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight =
+        MediaQuery.of(context).padding.top;
 
+    final onboardingRepository =
+        ref.watch(onboardingRepositoryProvider);
 
-    
+    final didCompleteOnboarding =
+        onboardingRepository.isOnboardingComplete();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!didCompleteOnboarding) {
+        showCupertinoModalSheet(
+          context: context,
+          builder: (context) {
+            return Onboarding();
+          },
+        );
+      }
+    });
 
     return CupertinoPageScaffold(
       child: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            collapsedHeight: 65.0,
-            //title: Text("Synthecure", style: Theme.of(context).textTheme.titleLarge,),
+            collapsedHeight: statusBarHeight,
+            pinned: true,
             title: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 16.0),
@@ -67,25 +86,34 @@ class _DashboardState extends State<Dashboard> {
                 child: Opacity(
                   opacity: 1,
                   child: Image.asset(
-                      scale: 1.8,
-                      "assets/Synthecure_Logo.jpg"),
+                    scale: 1.8,
+                    "assets/Synthecure_Logo.jpg",
+                  ),
                 ),
               ),
             ),
-
-            pinned: true,
-
-          
           ),
+          CupertinoSliverRefreshControl(
+            onRefresh: () async {
+           
+                  // ignore: unused_result
+                  ref.refresh(salesOverviewStreamProvider(
+                id: ref
+                    .read(firebaseAuthProvider)
+                    .currentUser!
+                    .uid,
+                mode: ref.read(selectedTimePeriodProvider),
+              ));
 
+              await Future.delayed(Duration(seconds: 2));
+            },
+          ),
           SliverToBoxAdapter(child: gapH16),
           const DatabaseList(),
           const RevenueChart(),
           const SalesOverview(),
           const OrderChart(),
-          SliverToBoxAdapter(
-            child: gapH48,
-          )
+          SliverToBoxAdapter(child: gapH48),
         ],
       ),
     );
@@ -141,8 +169,9 @@ class DatabaseList extends StatelessWidget {
                 label: item["label"],
                 icon: item["icon"],
                 backgroundColor: Colors.white,
-                iconColor:
-                    Theme.of(context).primaryColorDark.withOpacity(0.9),
+                iconColor: Theme.of(context)
+                    .primaryColorDark
+                    .withOpacity(0.9),
                 onTap: () =>
                     context.pushNamed(item["route"]),
               ),

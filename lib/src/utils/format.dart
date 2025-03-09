@@ -36,13 +36,12 @@ class Format {
   return formatter.format(value);
   }
 
-  static String formatRoundedNumber(double value) {
-  if (value <= 0) return "0"; // Handle edge case
+static String formatRoundedNumber(double value) {
+  if (value <= 0) return "\$0"; // ✅ Edge case: No negative or zero values
 
-  int magnitude = pow(10, value.floor().toString().length - 1).toInt(); // ✅ Find power of 10
-  int roundedValue = ((value / magnitude).round()) * magnitude; // ✅ Round to nearest leading digit
+  int roundedValue = ((value ~/ 500) * 500); // ✅ Always round down to nearest 500
 
-  return "\$${roundedValue.toStringAsFixed(0)}"; // ✅ Ensure formatting
+  return "\$${roundedValue.toStringAsFixed(0)}"; // ✅ Ensure proper formatting
 }
 
 static double calculatePercentChange(double current, double previous) {

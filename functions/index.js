@@ -25,9 +25,12 @@ const admin = require('firebase-admin');
 
 
 const {BigQuery} = require("@google-cloud/bigquery");
-
+const {BigQueryReadClient} = require("@google-cloud/bigquery-storage");
 
 const bigquery = new BigQuery();
+const bigqueryStorage = new BigQueryReadClient();
+
+
 const datasetId = "orders_monitoring";
 
 admin.initializeApp();
@@ -270,35 +273,51 @@ exports.deleteHospitalOrder = functions1.firestore
     });
 
 
-// 🔥 Function to fetch analytics by period
-exports.getAnalyticsByPeriod = functions1.https.onCall(async (data, context) => {
-  const period = data.period || "weekly"; // Default to weekly
-  let viewId;
+exports.getAnalyticsByPeriod = functions1.runWith({
+  minInstances: 1, // ✅ Keeps 1 instance warm to avoid cold starts
+  memory: "512MB", // ✅ Ensures enough memory for BigQuery execution
+  timeoutSeconds: 30, // ✅ Prevents long-running queries
+}).https.onCall(async (data, context) => {
+  console.log("✅ Function started...");
 
-  // Determine the correct BigQuery view
-  if (period === "daily") {
-    viewId = "daily_orders_view";
-  } else if (period === "weekly") {
-    viewId = "weekly_orders_view";
-  } else if (period === "monthly") {
-    viewId = "monthly_orders_view";
-  } else if (period === "yearly") {
-    viewId = "yearly_orders_view";
-  } else {
-    throw new functions.https.HttpsError("invalid-argument", "Invalid period provided.");
+  const period = data.period || "weekly";
+  const validPeriods = {
+    daily: "daily_orders_view",
+    weekly: "weekly_orders_view",
+    monthly: "monthly_orders_view",
+    yearly: "yearly_orders_view",
+  };
+  const viewId = validPeriods[period];
+
+  if (!viewId) {
+    console.log("❌ Invalid period:", period);
+    throw new functions1.https.HttpsError("invalid-argument", "Invalid period provided.");
   }
 
   try {
+    console.log("✅ Creating BigQuery Job...");
     const query = `SELECT * FROM \`${bigquery.projectId}.${datasetId}.${viewId}\``;
-    const [rows] = await bigquery.query(query);
 
-    if (!rows.length) {
-      throw new functions.https.HttpsError("not-found", "No data found.");
-    }
+    // ✅ Create and execute the query job
+    const [job] = await bigquery.createQueryJob({
+      query,
+      location: "US", // Adjust if needed
+    });
 
-    return {success: true, data: rows};
+    console.log("✅ Job created, waiting for results...");
+
+    // ✅ Retrieve query results
+    const [rows] = await job.getQueryResults();
+
+    console.log("✅ Query Success: Rows found =", rows.length);
+
+    return {
+      success: true,
+      data: rows.length ? rows : [],
+      message: rows.length ? "Data retrieved successfully." : "No data available for this period.",
+    };
   } catch (error) {
-    console.error("BigQuery Error:", error);
-    throw new functions.https.HttpsError("internal", "Error fetching analytics data.");
+    console.error("❌ BigQuery Error:", error);
+    throw new functions1.https.HttpsError("internal", error.message || "Error fetching analytics data.");
   }
 });

@@ -26,7 +26,6 @@ class SalesOverview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(selectedTimePeriodProvider);
 
-
     /// Function to cycle through time periods
     void cycleTimePeriod(WidgetRef ref) {
       final periods = [
@@ -82,7 +81,8 @@ class SalesOverview extends ConsumerWidget {
           children: [
             gapH12,
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0),
               child: Row(
                 mainAxisAlignment:
                     MainAxisAlignment.spaceBetween,
@@ -111,12 +111,13 @@ class SalesOverview extends ConsumerWidget {
                             Icons.calendar_today,
                             size: 20,
                           ),
-                          gapW12,
+                          gapW8,
                           Text(
                             formatDate(mode),
                             style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                                fontSize: 14,
+                                fontWeight:
+                                    FontWeight.bold),
                           ),
                         ],
                       ),
@@ -130,13 +131,13 @@ class SalesOverview extends ConsumerWidget {
               builder: (context, constraints) {
                 // Get the screen width
                 double screenWidth = constraints.maxWidth;
-    
+
                 // Calculate child width dynamically
                 double itemWidth =
                     (screenWidth / 2) - 16; // Minus padding
                 double itemHeight =
                     itemWidth; // Adjust this ratio as needed
-    
+
                 return GridView.count(
                   padding: EdgeInsets.zero,
                   crossAxisCount: 2,
@@ -160,7 +161,7 @@ class SalesOverview extends ConsumerWidget {
                     ),
                     _OverviewCard(
                       title: "Total Doctors",
-                      icon: Icons.dock,
+                      icon: Icons.supervised_user_circle,
                       iconColor: Colors.purple,
                       mode: mode,
                     ),
@@ -174,7 +175,7 @@ class SalesOverview extends ConsumerWidget {
                 );
               },
             ),
-    
+
             const SizedBox(height: 16),
             //_OrderChart(model: model, mode: mode),
           ],
@@ -261,11 +262,10 @@ class _OverviewCard extends StatelessWidget {
 
                       switch (title) {
                         case "Active Reps":
-                          value =
-                              Format.formatSalesCurrency(
-                                  model.totalRevenue);
+                          value = model.totalUsers.toString();
+                                
                           percentChange =
-                              model.percentChangeRevenue ??
+                              model.percentChangeUsers ??
                                   0.0;
                           break;
                         case "Total Doctors":
@@ -340,7 +340,6 @@ class _OverviewCard extends StatelessWidget {
     );
   }
 }
-
 
 class ShimmerOverviewColumn extends StatelessWidget {
   const ShimmerOverviewColumn({super.key});
