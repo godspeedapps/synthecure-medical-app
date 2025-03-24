@@ -24,7 +24,7 @@ final analyticsServiceProvider = AutoDisposeProvider<AnalyticsService>.internal(
 // ignore: unused_element
 typedef AnalyticsServiceRef = AutoDisposeProviderRef<AnalyticsService>;
 String _$salesOverviewStreamHash() =>
-    r'ba6c2167eccff9411d0a2b08df28b639da532910';
+    r'f32ea2380c8a88235bdabeeffb9a5534a605d9cb';
 
 /// Copied from Dart SDK
 class _SystemHash {

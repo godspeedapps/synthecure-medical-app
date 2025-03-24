@@ -78,16 +78,16 @@ class AnalyticsRepository {
   }
 
   Future<DashboardAnalytics> fetchAnalytics(
-      String period) async {
+      String period, String? userId) async {
     try {
+      print(userId);
+
       final HttpsCallable callable =
           functions.httpsCallable("getAnalyticsByPeriod");
-      final HttpsCallableResult result =
-          await callable.call({"period": period});
+      final HttpsCallableResult result = await callable
+          .call({"period": period, "userId": userId});
 
       if (result.data["success"] == true) {
-     
-
         // ✅ Ensure correct casting of BigQuery response
         List<DashboardAnalytics> analyticsList = (result
                 .data["data"] as List<dynamic>)
@@ -109,5 +109,6 @@ class AnalyticsRepository {
 
 final analyticsRepositoryProvider =
     Provider<AnalyticsRepository>((ref) {
-  return AnalyticsRepository(FirebaseFirestore.instance,  FirebaseFunctions.instance);
+  return AnalyticsRepository(FirebaseFirestore.instance,
+      FirebaseFunctions.instance);
 });

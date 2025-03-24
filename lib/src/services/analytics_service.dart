@@ -6,6 +6,7 @@ import 'package:synthecure/src/features/admin/dashboard/sales_overview.dart';
 import 'package:synthecure/src/repositories/analytics_repository.dart';
 import 'package:synthecure/src/repositories/entries_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:synthecure/src/routing/app_router.dart';
 import '../repositories/firebase_auth_repository.dart';
 import '../domain/app_user.dart';
 import '../repositories/orders_repository.dart';
@@ -19,8 +20,8 @@ class AnalyticsService {
   final AnalyticsRepository analyticsRepository;
 
   Future<DashboardAnalytics> _salesOverviewStream(
-          UserID uid, String period) =>
-      analyticsRepository.fetchAnalytics(period);
+          UserID uid, String period, String? userId) =>
+      analyticsRepository.fetchAnalytics(period, userId);
 
   Stream<MonthlyAnalytics> _monthlyAnalyticsStream() =>
       analyticsRepository.watchMonthlyAnalytics().map(
@@ -37,10 +38,13 @@ AnalyticsService analyticsService(AnalyticsServiceRef ref) {
 
 @Riverpod(keepAlive: true)
 Future<DashboardAnalytics> salesOverviewStream(
-  SalesOverviewStreamRef ref, {
-  required String id, required String mode // Accept an id argument
-}) {
+    SalesOverviewStreamRef ref,
+    {required String id,
+    required String mode // Accept an id argument
+    }) {
   final user = ref.watch(firebaseAuthProvider).currentUser;
+
+  final isAdmin = ref.watch(isAdminProvider) ?? false;
 
   if (user == null) {
     throw AssertionError('User can\'t be null');
@@ -49,7 +53,7 @@ Future<DashboardAnalytics> salesOverviewStream(
   final analyticsService =
       ref.watch(analyticsServiceProvider);
 
-  return analyticsService._salesOverviewStream(id, mode);
+  return analyticsService._salesOverviewStream(id, mode, !isAdmin ? user.uid : null);
 }
 
 @Riverpod(keepAlive: true)

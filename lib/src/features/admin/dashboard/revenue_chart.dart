@@ -11,6 +11,7 @@ import 'package:synthecure/src/domain/order_detail.dart';
 import 'package:synthecure/src/features/admin/dashboard/full_revenue_chart.dart';
 import 'package:synthecure/src/features/admin/dashboard/sales_overview.dart';
 import 'package:synthecure/src/repositories/firebase_auth_repository.dart';
+import 'package:synthecure/src/routing/app_router.dart';
 import 'package:synthecure/src/services/analytics_service.dart';
 import 'package:synthecure/src/utils/format.dart';
 import 'package:synthecure/src/widgets/empty_content.dart';
@@ -22,6 +23,8 @@ class RevenueChart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isAdmin = ref.read(isAdminProvider);
+
     final GlobalKey<_HomePageChartState> chartKey =
         GlobalKey();
 
@@ -35,17 +38,19 @@ class RevenueChart extends ConsumerWidget {
         mode: mode));
 
     String getRevenuePeriodText(String mode) {
+      String titleText = isAdmin! ?  "Revenue" : "Sales";
+
       switch (mode) {
         case "daily":
-          return "Daily Revenue";
+          return "Daily $titleText";
         case "weekly":
-          return "Weekly Revenue";
+          return "Weekly $titleText";
         case "monthly":
-          return "Monthly Revenue";
+          return "Monthly $titleText";
         case "yearly":
-          return "Yearly Revenue";
+          return "Yearly $titleText";
         default:
-          return "Total Revenue";
+          return "Total $titleText";
       }
     }
 
@@ -68,7 +73,7 @@ class RevenueChart extends ConsumerWidget {
               List<FlSpot> chartData =
                   chartState.getChartData();
 
-             await showCupertinoSheet(
+              await showCupertinoSheet(
                   context: context,
                   pageBuilder: (context) =>
                       FullRevenueChart(
@@ -273,17 +278,18 @@ class _HomePageChartState
                   isCurved: true,
                   color: Colors.deepPurpleAccent,
                   dotData: FlDotData(show: false),
-                 belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.deepPurpleAccent.withOpacity(0.3),
-                  Colors.white,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.deepPurpleAccent
+                            .withOpacity(0.3),
+                        Colors.white,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -306,17 +312,18 @@ class _HomePageChartState
                   color: Colors.deepPurpleAccent
                       .withOpacity(0.7),
                   dotData: FlDotData(show: false),
-                 belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.deepPurpleAccent.withOpacity(0.3),
-                  Colors.white,
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+                  belowBarData: BarAreaData(
+                    show: true,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.deepPurpleAccent
+                            .withOpacity(0.3),
+                        Colors.white,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
                 ),
               ],
             ),

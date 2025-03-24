@@ -32,6 +32,7 @@ import 'package:synthecure/src/features/entries/entry_view.dart';
 import 'package:synthecure/src/features/auth/email_password/forgot_password.dart';
 import 'package:synthecure/src/features/auth/login.dart';
 import 'package:synthecure/src/features/orders/add_order.dart';
+import 'package:synthecure/src/features/users/home.dart';
 import 'package:synthecure/src/routing/loading_screen.dart';
 import 'package:synthecure/src/routing/scaffold_with_bottom_nav_bar.dart';
 import '../repositories/firebase_auth_repository.dart';
@@ -81,7 +82,8 @@ enum AppRoute {
   productHospitals,
   addProduct,
   editUserHospitals,
-  chooseUserHospitals
+  chooseUserHospitals,
+  home
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -106,7 +108,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           if (isAdmin == true) {
             return '/dashboard';
           } else {
-            return '/entries';
+            return '/home';
           }
         }
       } else {
@@ -550,6 +552,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             return ScaffoldWithBottomNavBar(child: child);
           },
           routes: [
+            GoRoute(path: '/home', name: AppRoute.home.name, pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: RepHome())),
             GoRoute(
               path: '/entries',
               name: AppRoute.entries.name,

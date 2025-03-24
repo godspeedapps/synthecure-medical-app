@@ -7,7 +7,8 @@ import 'package:synthecure/src/routing/app_router.dart';
 // This is a temporary implementation
 // https://github.com/flutter/packages/pull/2650
 class ScaffoldWithBottomNavBarAdmin extends StatefulWidget {
-  const ScaffoldWithBottomNavBarAdmin({super.key, required this.child});
+  const ScaffoldWithBottomNavBarAdmin(
+      {super.key, required this.child});
   final Widget child;
 
   @override
@@ -15,7 +16,8 @@ class ScaffoldWithBottomNavBarAdmin extends StatefulWidget {
       _ScaffoldWithBottomNavBarAdminState();
 }
 
-class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBarAdmin> {
+class _ScaffoldWithBottomNavBarAdminState
+    extends State<ScaffoldWithBottomNavBarAdmin> {
   // used for the currentIndex argument of BottomNavigationBar
   int _selectedIndex = 0;
 
@@ -30,13 +32,9 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
       // More info here:
       // https://github.com/flutter/flutter/issues/99124
       context.goNamed(AppRoute.dashboard.name);
-    }
-    else if( index == 1) {
-
-           context.goNamed(AppRoute.allOrders.name);
-    } 
-    
-    else if (index == 2) {
+    } else if (index == 1) {
+      context.goNamed(AppRoute.allOrders.name);
+    } else if (index == 2) {
       context.goNamed(AppRoute.account.name);
     }
   }
@@ -47,8 +45,8 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
       resizeToAvoidBottomInset: false,
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
-     
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor:
+            Theme.of(context).colorScheme.primary,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         items: [
@@ -61,22 +59,20 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
 
           // ),
           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.house_alt),
-             
-              label: 'Home'.hardcoded,
-             ),
+            icon: const Icon(CupertinoIcons.house_alt),
+            label: 'Home'.hardcoded,
+          ),
 
-           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.doc_on_clipboard),
-             
-              label: 'Sheets'.hardcoded,
-             ),
-        
           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.person_circle),
-            
-              label: 'Account'.hardcoded,
-             ),
+            icon:
+                const Icon(CupertinoIcons.doc_on_clipboard),
+            label: 'Sheets'.hardcoded,
+          ),
+
+          BottomNavigationBarItem(
+            icon: const Icon(CupertinoIcons.person_circle),
+            label: 'Account'.hardcoded,
+          ),
         ],
         onTap: (index) => _tap(context, index),
       ),
@@ -98,13 +94,11 @@ class _ScaffoldWithBottomNavBarAdminState extends State<ScaffoldWithBottomNavBar
   }
 }
 
-
-
-
 // This is a temporary implementation
 // https://github.com/flutter/packages/pull/2650
 class ScaffoldWithBottomNavBar extends StatefulWidget {
-  const ScaffoldWithBottomNavBar({super.key, required this.child});
+  const ScaffoldWithBottomNavBar(
+      {super.key, required this.child});
   final Widget child;
 
   @override
@@ -112,7 +106,8 @@ class ScaffoldWithBottomNavBar extends StatefulWidget {
       _ScaffoldWithBottomNavBarState();
 }
 
-class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
+class _ScaffoldWithBottomNavBarState
+    extends State<ScaffoldWithBottomNavBar> {
   // used for the currentIndex argument of BottomNavigationBar
   int _selectedIndex = 0;
 
@@ -122,13 +117,15 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       return;
     }
     setState(() => _selectedIndex = index);
+
     if (index == 0) {
+      context.goNamed(AppRoute.home.name);
+    } else if (index == 1) {
       // Note: this won't remember the previous state of the route
       // More info here:
       // https://github.com/flutter/flutter/issues/99124
       context.goNamed(AppRoute.entries.name);
-    }
-    else {
+    } else {
       context.goNamed(AppRoute.account.name);
     }
   }
@@ -139,31 +136,26 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
       resizeToAvoidBottomInset: false,
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor:
+            Theme.of(context).colorScheme.primary,
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         items: [
           // products
-          // BottomNavigationBarItem(
-          //   activeIcon: const Icon(Icons.add, color:CupertinoColors.black,),
-          //   icon: const Icon(Icons.add),
-          //   label: 'Add'.hardcoded,
-          //   backgroundColor: CupertinoColors.activeBlue
-
-          // ),
           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.doc_on_clipboard),
-             
-              label: 'Sheets'.hardcoded,
-             ),
-
-        
-        
+            icon: const Icon(CupertinoIcons.house_alt),
+            label: 'Honme'.hardcoded,
+          ),
           BottomNavigationBarItem(
-              icon: const Icon(CupertinoIcons.person_circle),
-            
-              label: 'Account'.hardcoded,
-             ),
+            icon:
+                const Icon(CupertinoIcons.doc_on_clipboard),
+            label: 'Sheets'.hardcoded,
+          ),
+
+          BottomNavigationBarItem(
+            icon: const Icon(CupertinoIcons.person_circle),
+            label: 'Account'.hardcoded,
+          ),
         ],
         onTap: (index) => _tap(context, index),
       ),

@@ -281,22 +281,46 @@ exports.getAnalyticsByPeriod = functions1.runWith({
   console.log("✅ Function started...");
 
   const period = data.period || "weekly";
-  const validPeriods = {
-    daily: "daily_orders_view",
-    weekly: "weekly_orders_view",
-    monthly: "monthly_orders_view",
-    yearly: "yearly_orders_view",
-  };
-  const viewId = validPeriods[period];
+  const userId = data.userId || null; // ✅ Get userId, default to null
 
-  if (!viewId) {
+  // ✅ Define Views (for Admin) and TVFs (for Users)
+  const validPeriods = {
+    daily: {
+      view: "daily_orders_view",
+      tvf: "synthecure-database.orders_monitoring.get_daily_orders",
+    },
+    weekly: {
+      view: "weekly_orders_view",
+      tvf: "synthecure-database.orders_monitoring.get_weekly_orders",
+    },
+    monthly: {
+      view: "monthly_orders_view",
+      tvf: "synthecure-database.orders_monitoring.get_monthly_orders",
+    },
+    yearly: {
+      view: "yearly_orders_view",
+      tvf: "synthecure-database.orders_monitoring.get_yearly_orders",
+    },
+  };
+
+  const periodData = validPeriods[period];
+  if (!periodData) {
     console.log("❌ Invalid period:", period);
     throw new functions1.https.HttpsError("invalid-argument", "Invalid period provided.");
   }
 
   try {
-    console.log("✅ Creating BigQuery Job...");
-    const query = `SELECT * FROM \`${bigquery.projectId}.${datasetId}.${viewId}\``;
+    let query;
+
+    // ✅ Use View (Admin Query)
+    if (!userId) {
+      console.log(`✅ Querying View: ${periodData.view} (Admin Mode)`);
+      query = `SELECT * FROM \`${bigquery.projectId}.${datasetId}.${periodData.view}\``;
+    } else {
+      // ✅ Use TVF (User Query) with Direct String Interpolation
+      console.log(`✅ Querying TVF: ${periodData.tvf} for user: ${userId}`);
+      query = `SELECT * FROM \`${periodData.tvf}\`("${userId}")`; // ✅ Embed userId directly
+    }
 
     // ✅ Create and execute the query job
     const [job] = await bigquery.createQueryJob({
@@ -321,3 +345,5 @@ exports.getAnalyticsByPeriod = functions1.runWith({
     throw new functions1.https.HttpsError("internal", error.message || "Error fetching analytics data.");
   }
 });
+
+
